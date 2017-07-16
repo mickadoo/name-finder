@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+
+<html lang="en" ng-app="namePicker" class="no-js">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>My AngularJS App</title>
-  <meta name="description" content="">
+  <title>Variable Namer</title>
+  <meta name="description" content="Find a name for things">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
@@ -15,29 +12,37 @@
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body>
-  <ul class="menu">
-    <li><a href="#!/view1">view1</a></li>
-    <li><a href="#!/view2">view2</a></li>
-  </ul>
 
-  <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-  <![endif]-->
+  <div ng-controller="mainCtrl">
 
-  <div ng-view></div>
+    <div id="sentence-container">
+      <div ng-repeat="sentence in sentences">
+        {{ sentence | replaceWords:this.selectedVariants }}
+      </div>
+    </div>
 
-  <div>Angular seed app: v<span app-version></span></div>
+    <div id="word-container">
 
-  <!-- In production use:
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
-  -->
+      <div ng-repeat="(key, wordVariants) in words">
+        {{ key + 1 }}:
+        <select name="mySelect" id="mySelect" ng-options="wordVariant for wordVariant in wordVariants" ng-model="selectedVariants[key]"/>
+        <input type="text" placeholder="Add a variant..." ng-model="newVariants[key]" ng-enter="addVariant(key)"/>
+      </div>
+    </div>
+
+    <input type="text" placeholder="Add a sentence.." ng-model="newSentence" ng-enter="addSentence()"/>
+    <br/>
+    <input type="text" placeholder="Add a word.." ng-model="newWord" ng-enter="addWord()"/>
+
+  </div>
+
+  <div class="explanation">
+    Add words for each thing you're seaching for a name for.<br/>
+    Add sentences, but replacing the word with "&lt;1&gt;", where "1" is the first word.<br/>
+    Add variants for the words you defined.
+  </div>
+
   <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="app.js"></script>
-  <script src="view1/view1.js"></script>
-  <script src="view2/view2.js"></script>
-  <script src="components/version/version.js"></script>
-  <script src="components/version/version-directive.js"></script>
-  <script src="components/version/interpolate-filter.js"></script>
 </body>
 </html>
