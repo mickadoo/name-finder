@@ -24,16 +24,23 @@
     <div id="word-container">
 
       <div ng-repeat="(key, wordVariants) in words">
-        {{ key + 1 }}:
-        <select name="mySelect" id="mySelect" ng-options="wordVariant for wordVariant in wordVariants" ng-model="selectedVariants[key]"/>
-        <input type="text" placeholder="Add a variant..." ng-model="newVariants[key]" ng-enter="addVariant(key)"/>
+        <form ng-submit="addVariant(key)">
+          {{ key + 1 }}:
+          <select name="mySelect" id="mySelect" ng-options="wordVariant for wordVariant in wordVariants" ng-model="selectedVariants[key]"/>
+          <input type="text" placeholder="Add a variant..." ng-model="newVariants[key]"/>
+          <button type="submit">+</button>
+      </form>
       </div>
     </div>
 
-    <input type="text" placeholder="Add a sentence.." ng-model="newSentence" ng-enter="addSentence()"/>
-    <br/>
-    <input type="text" placeholder="Add a word.." ng-model="newWord" ng-enter="addWord()"/>
-
+    <form ng-submit="addSentence()">
+      <input type="text" placeholder="Add a sentence.." ng-model="newSentence"/>
+      <button type="submit">+</button>
+    </form>
+    <form ng-submit="addWord()">
+      <input type="text" placeholder="Add a word.." ng-model="newWord"/>
+      <button type="submit">+</button>
+    </form>
   </div>
 
   <div class="explanation">

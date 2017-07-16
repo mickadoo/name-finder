@@ -26,6 +26,7 @@ angular.module('namePicker', [])
   };
 
   $scope.addVariant = function(key) {
+    console.log('here');
     var newVariant = $scope.newVariants[key];
     if (!inArray(newVariant, $scope.words[key])) {
       $scope.words[key].push(newVariant);
@@ -47,18 +48,5 @@ angular.module('namePicker', [])
       sentence = sentence.replace('<' + (parseInt(key) + 1) + '>', selectedVariants[key]);
     }
     return sentence;
-  };
-})
-
-.directive('ngEnter', function() {
-  return function(scope, element, attrs) {
-    element.bind("keydown keypress", function(event) {
-      if(event.which === 13) {
-        scope.$apply(function(){
-          scope.$eval(attrs.ngEnter);
-        });
-        event.preventDefault();
-      }
-    });
   };
 });
