@@ -26,7 +26,6 @@ angular.module('namePicker', [])
   };
 
   $scope.addVariant = function(key) {
-    console.log('here');
     var newVariant = $scope.newVariants[key];
     if (!inArray(newVariant, $scope.words[key])) {
       $scope.words[key].push(newVariant);
@@ -43,9 +42,14 @@ angular.module('namePicker', [])
 }])
 
 .filter('replaceWords', function() {
+  var token, pluralToken;
+
   return function(sentence, selectedVariants) {
     for (var key in selectedVariants) {
-      sentence = sentence.replace('<' + (parseInt(key) + 1) + '>', selectedVariants[key]);
+      token = '<' + (parseInt(key) + 1) + '>';
+      pluralToken = '<' + (parseInt(key) + 1) + ':pl>';
+      sentence = sentence.replace(token, selectedVariants[key]);
+      sentence = sentence.replace(pluralToken, pluralize(selectedVariants[key]));
     }
     return sentence;
   };
