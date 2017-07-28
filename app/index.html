@@ -13,48 +13,62 @@
 </head>
 <body>
 
-  <div ng-controller="mainCtrl">
+<div ng-controller="mainCtrl">
 
-    <div id="sentence-container">
-      <div ng-repeat="sentence in sentences">
-        {{ sentence | replaceWords:this.selectedVariants }}
-      </div>
+  <div id="sentence-container">
+    <div ng-repeat="sentence in sentences">
+      {{ sentence | replaceWords:this.selectedVariants }}
     </div>
-
-    <div id="word-container">
-
-      <div ng-repeat="(key, wordVariants) in words">
-        <form ng-submit="addVariant(key)">
-          <ol>
-            <li>
-              <select name="mySelect" id="mySelect" ng-options="wordVariant for wordVariant in wordVariants" ng-model="selectedVariants[key]"/>
-              <input type="text" placeholder="Add a variant..." ng-model="newVariants[key]"/>
-              <button type="submit">+</button>
-            </li>
-          </ol>
-        </form>
-      </div>
-    </div>
-
-    <form ng-submit="addWord()">
-      <input type="text" placeholder="Add a word.." ng-model="newWord"/>
-      <button type="submit">+</button>
-    </form>
-    <form ng-submit="addSentence()">
-      <input type="text" placeholder="Add a sentence.." ng-model="newSentence" size="50"/>
-      <button type="submit">+</button>
-    </form>
   </div>
 
-  <div class="explanation">
-    Add words for each thing you're seaching for a name for.<br/>
-    Add sentences, but replacing the word with &lt;1&gt;, where "1" is the first word you're looking for.<br/>
-    Add variants for the words you defined.<br/>
-    Use &lt;1:pl&gt; for plural cases.
+  <div id="word-container">
+
+    <div ng-repeat="(key, wordVariants) in words">
+      <form ng-submit="addVariant(key, newVariants[key])">
+        {{ key + 1 }}
+        <select name="mySelect" id="mySelect"
+          ng-options="wordVariant for wordVariant in wordVariants"
+          ng-model="selectedVariants[key]"/>
+        <input placeholder="Add a variant..." ng-model="newVariants[key]"/>
+        <button>+</button>
+        Synonyms:
+        <select>
+          <option ng-repeat="synonym in wordSynonyms[key]"
+              ng-click="addVariant(key, synonym)">{{ synonym }}
+          </option>
+        </select>
+        <svg ng-if="pendingLookups[key]" version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="30px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+          <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946 s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634 c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/><path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0 C22.32,8.481,24.301,9.057,26.013,10.047z">
+          <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="0.5s" repeatCount="indefinite"/>
+          </path>
+        </svg>
+      </form>
+    </div>
   </div>
 
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/pluralize/pluralize.js"></script>
-  <script src="app.js"></script>
+  <br/><br/>
+
+  <form ng-submit="addWord()">
+    <input placeholder="Add a word.." ng-model="newWord"/>
+    <button>+</button>
+  </form>
+  <form ng-submit="addSentence()">
+    <input placeholder="Add a sentence.." ng-model="newSentence" size="50"/>
+    <button>+</button>
+  </form>
+</div>
+
+<div class="explanation">
+  Add words for each thing you're seaching for a name for.<br/>
+  Add sentences, but replacing the word with &lt;1&gt;, where "1" is the first
+  word you're looking for.<br/>
+  Add variants for the words you defined.<br/>
+  Use &lt;1:pl&gt; for plural cases.
+</div>
+
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/pluralize/pluralize.js"></script>
+<script src="env.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
